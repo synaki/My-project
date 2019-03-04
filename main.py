@@ -14,16 +14,43 @@ def user_input():
     for sequence in SeqIO.parse(input_genome, "fasta"):
         print("The length of the given input genome sequence is ")
         print(len(sequence))
+    #Imports sequence using biopython limited to fasta format
     for sequence in SeqIO.parse(input_genome, "gb"):
         print("The length of the given input genome sequence is ")
         print(len(sequence))
+    #Imports sequence using biopython limited to genbank sequence
+    choose = input("choose one of the transposon : 1. Tn5 2. Tn7 ")
+    #gets input from user about the transposon selection
+    if choose == "1" or "tn5":
+        flag = True
+    #if it is true goes to tn5 function to produce a random insertion in the genome
+    elif choose == "2" or "Tn7":
+        flag = False
+    #if it is false goes to tn7 function to produce a single site specific modification
+    insert_Gene = input("Please insert the desired gene of interest :")
+    #gets the desired gene from the user
+    for fragment in SeqIO.parse(insert_Gene, "fasta"):
+        print("The length of the desired gene of interest")
+        print(len(fragment))
 
-    TnsA = input("please insert the TnsA gene :")
-    for tnsA in SeqIO.parse(TnsA, "fasta"):
-        
-    TnsB = input("please inser the TnsB gene :")
-    TnsC = input("please insert the TnsC gene :")
-    TnsD = input("please insert the TnsD gene :")
+#function that interpret transposon tn7
+#It insert at specific sections
+def tn7():
+    #imports the essential transposon gene from the local directory
+    for TnsA in SeqIO.parse("tnsA.txt", "fasta"):
+        tnsA = TnsA.seq
+    # transposes A which forms a complex with the transposes B and C to form a nick in the DNA
+    for TnsB in SeqIO.parse("tnsB.txt", "fasta"):
+        tnsB = TnsB.seq
+    for TnsC in SeqIO.parse("tnsC.txt", "fasta"):
+        tnsC = TnsC.seq
+    for TnsD in SeqIO.parse("tnsD.txt", "fasta"):
+        tnsD = TnsD.seq
+    # transposes D which further helps in the choosing the desired position
 
 
+#main
 user_input()
+tn7()
+
+
