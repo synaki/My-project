@@ -26,6 +26,8 @@ def user_input():
     #if it is true goes to tn5 function to produce a random insertion in the genome
     elif choose == "2" or "Tn7":
         flag = False
+
+def desired_gene():
     #if it is false goes to tn7 function to produce a single site specific modification
     insert_Gene = input("Please insert the desired gene of interest :")
     #gets the desired gene from the user
@@ -33,11 +35,11 @@ def user_input():
         print("The length of the desired gene of interest")
         print(len(fragment.seq))
         ak = fragment.seq
-        return ak
+        print(ak)
 
 #function that interpret transposon tn7
 #It insert at specific sections
-def tn7():
+
     #imports the essential transposon gene from the local directory
     for TnsA in SeqIO.parse("tnsA.txt", "fasta"):
         tnsA = TnsA.seq
@@ -51,18 +53,23 @@ def tn7():
     # transposes D which further helps in the choosing the desired position
     gene = tnsA + tnsB + tnsC + tnsD
     print(len(gene))
-    return gene
-# to concatinate the given desired gene with the tranposes to form final insert
-def concatinate():
-    print("ak")
-    sw = tn7()
-    sk = user_input()
-    final = sw + sk
+    final = concatinate(gene, ak)
     print(final)
 
+# to concatinate the given desired gene with the tranposes to form final insert
+def concatinate(gene, fragment):
+    return gene + fragment
+
+#function that imports the tn5 transpose
+def tn5():
+    for tns5 in SeqIO.parse("tn5.txt", "fasta"):
+        tns5 = tns5.seq
+        print(tns5)
+
 user_input()
-tn7()
-concatinate()
+desired_gene()
+tn5()
+
 
 
 
