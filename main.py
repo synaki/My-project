@@ -31,7 +31,9 @@ def user_input():
     #gets the desired gene from the user
     for fragment in SeqIO.parse(insert_Gene, "fasta"):
         print("The length of the desired gene of interest")
-        print(len(fragment))
+        print(len(fragment.seq))
+        ak = fragment.seq
+        return ak
 
 #function that interpret transposon tn7
 #It insert at specific sections
@@ -47,10 +49,22 @@ def tn7():
     for TnsD in SeqIO.parse("tnsD.txt", "fasta"):
         tnsD = TnsD.seq
     # transposes D which further helps in the choosing the desired position
+    gene = tnsA + tnsB + tnsC + tnsD
+    print(len(gene))
+    return gene
+# to concatinate the given desired gene with the tranposes to form final insert
+def concatinate():
+    print("ak")
+    sw = tn7()
+    sk = user_input()
+    final = sw + sk
+    print(final)
 
-
-#main
 user_input()
 tn7()
+concatinate()
+
+
+
 
 
