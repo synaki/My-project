@@ -53,10 +53,10 @@ def desired_gene():
     # transposes D which further helps in the choosing the desired position
     gene = tnsA + tnsB + tnsC + tnsD
     print(len(gene))
-    final = concatinate(gene, ak)
+    final = ak + gene
     print(final)
 
-# to concatinate the given desired gene with the tranposes to form final insert
+# to concatinate the given desired gene with the transposes to form final insert
 def concatinate(gene, fragment):
     return gene + fragment
 
@@ -66,10 +66,15 @@ def tn5():
         tns5 = tns5.seq
         print(tns5)
 
+def location_predictor():
+    location = float(input("Please provide the insert position using tn7: "))
+    genome_map = int(46416.52 * location)
+    print(genome_map)
+
 user_input()
 desired_gene()
 tn5()
-
+location_predictor()
 
 
 
