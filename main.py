@@ -24,9 +24,12 @@ def usage(Sensor):
     product = gene
     final = product + Sensor
     print(final)
-    return final
+    for Tns5 in SeqIO.parse("tn5.txt", "fasta"):
+        tns5 =Tns5.seq
+        print(tns5)
+    return final,tns5
 
-
+#function which gets input from the user
 def user_input():
     print("Input limited to fasta or genbank file")
     # Gives access to the user to import their genome of interest
@@ -46,11 +49,12 @@ def user_input():
             print(len(sequence))
 
     #Imports sequence using biopython limited to fasta format
-    for sequence in SeqIO.parse(input_genome, "gb"):
 
-        print("The length of the given input genome sequence is ")
+        for sequence in SeqIO.parse(input_genome, "gb"):
 
-        print(len(sequence))
+            print("The length of the given input genome sequence is ")
+
+            print(len(sequence))
     #Imports sequence using biopython limited to genbank sequence
 
 
@@ -60,7 +64,6 @@ def user_input():
         print("The length of the desired gene of interest")
         print(len(fragment.seq))
         Sensor = fragment.seq
-
 
     return Sensor, input_genome
 
@@ -76,9 +79,15 @@ def location_predictor():
     return genome_map
 
 #function helps to insert the transposon carring segment at desired location
+def tn7(genome_map, insert_genome, final):
+    #gets the genome, insert location and the tn7 tranposes with the insert
+    if len(input_genome)> genome_map:
+        print("ak")
 
 
-Sensor, input_genome, = user_input()
+
+Sensor, input_genome = user_input()
 usage(Sensor)
-location_predictor()
-
+final = usage(Sensor)
+genome_map = location_predictor()
+tn7(genome_map,input_genome, final)
