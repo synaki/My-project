@@ -4,42 +4,10 @@
 # Imports
 from Bio import SeqIO
 from Bio.Seq import Seq
+import sys
 
 #function to get input from the user
-def user_input():
-    print("Input limited to fasta or genbank file")
-    #to give the user a outlook of input file format
-    input_genome = input("please insert the genome to be edited :")
-    # Gives access to the user to import their genome of interest
-    for sequence in SeqIO.parse(input_genome, "fasta"):
-        print("The length of the given input genome sequence is ")
-        print(len(sequence))
-    #Imports sequence using biopython limited to fasta format
-    for sequence in SeqIO.parse(input_genome, "gb"):
-        print("The length of the given input genome sequence is ")
-        print(len(sequence))
-    #Imports sequence using biopython limited to genbank sequence
-    choose = input("choose one of the transposon : 1. Tn5 2. Tn7 ")
-    #gets input from user about the transposon selection
-    if choose == "1" or "tn5":
-        flag = True
-    #if it is true goes to tn5 function to produce a random insertion in the genome
-    elif choose == "2" or "Tn7":
-        flag = False
-
-def desired_gene():
-    #if it is false goes to tn7 function to produce a single site specific modification
-    insert_Gene = input("Please insert the desired gene of interest :")
-    #gets the desired gene from the user
-    for fragment in SeqIO.parse(insert_Gene, "fasta"):
-        print("The length of the desired gene of interest")
-        print(len(fragment.seq))
-        ak = fragment.seq
-        print(ak)
-
-#function that interpret transposon tn7
-#It insert at specific sections
-
+def usage(Sensor):
     #imports the essential transposon gene from the local directory
     for TnsA in SeqIO.parse("tnsA.txt", "fasta"):
         tnsA = TnsA.seq
@@ -53,30 +21,64 @@ def desired_gene():
     # transposes D which further helps in the choosing the desired position
     gene = tnsA + tnsB + tnsC + tnsD
     print(len(gene))
-    final = ak + gene
+    product = gene
+    final = product + Sensor
     print(final)
+    return final
 
-# to concatinate the given desired gene with the transposes to form final insert
-def concatinate(gene, fragment):
-    return gene + fragment
 
-#function that imports the tn5 transpose
-def tn5():
-    for tns5 in SeqIO.parse("tn5.txt", "fasta"):
-        tns5 = tns5.seq
-        print(tns5)
+def user_input():
+    print("Input limited to fasta or genbank file")
+    # Gives access to the user to import their genome of interest
+    #regulating the input file formats
+    try:
+        input_genome = input("please insert the genome to be edited: ")
+
+    except FileNotFoundError:
+
+        print("%s cannot be opened for reading" % (input_genome))
+
+    else:
+
+        for sequence in SeqIO.parse(input_genome, "fasta"):
+
+            print("The length of the given input genome sequence is ")
+            print(len(sequence))
+
+    #Imports sequence using biopython limited to fasta format
+    for sequence in SeqIO.parse(input_genome, "gb"):
+
+        print("The length of the given input genome sequence is ")
+
+        print(len(sequence))
+    #Imports sequence using biopython limited to genbank sequence
+
+
+    insert_Gene = input("Please insert the desired gene of interest :")
+    #gets the desired gene from the user
+    for fragment in SeqIO.parse(insert_Gene, "fasta"):
+        print("The length of the desired gene of interest")
+        print(len(fragment.seq))
+        Sensor = fragment.seq
+
+
+    return Sensor, input_genome
 
 def location_predictor():
-    location = float(input("Please provide the insert position using tn7: "))
+    try:
+        location = float(input("Please provide the insert position using tn7: "))
+
+    except:
+        print("input is restricted to float")
+
     genome_map = int(46416.52 * location)
-    print(genome_map)
+    print("The Insertion position is :", genome_map)
+    return genome_map
 
-user_input()
-desired_gene()
-tn5()
+#function helps to insert the transposon carring segment at desired location
+
+
+Sensor, input_genome, = user_input()
+usage(Sensor)
 location_predictor()
-
-
-
-
 
