@@ -20,20 +20,26 @@ def usage(Sensor):
         tnsD = TnsD.seq
     # transposes D which further helps in the choosing the desired position
     gene = tnsA + tnsB + tnsC + tnsD
-    print("The insert tn7 transposes length is :")
-    print(len(gene))
+    #concatinates the transposes to form a new sequence
+    print("The insert tn7 transposes length is :", len(gene))
+    #
     product = gene
-    tn7_insert = Sensor + product
-    print("The final insert and tn7 transposes length is :")
-    print(len(tn7_insert))
+    tn7_insert = (Sensor + product)
+    print(tn7_insert)
+    #
+    print("The final insert and tn7 transposes length is :", len(tn7_insert))
+    #
     for Tns5 in SeqIO.parse("tn5.txt", "fasta"):
         tns5 =Tns5.seq
-    print("The length of tn5 transposes is :")
-    print(len(tns5))
+    #
+    print("The length of tn5 transposes is :", len(tns5))
+    #
     tn5_insert = Sensor + tns5
-    print("The final insert and tn5 transposes length is :")
-    print(len(tn5_insert))
-    return tn5_insert,tns5, tn7_insert
+    print(tn5_insert)
+    print("The final insert and tn5 transposes length is :", len(tn5_insert))
+    #
+    return tn5_insert, tns5, tn7_insert, product
+    #
 
 #function which gets input from the user
 def user_input():
@@ -85,15 +91,21 @@ def location_predictor():
     return genome_map
 
 #function helps to insert the transposon carring segment at desired location
-def tn7(genome_map, input_data, tn7_insert):
-    print(tn7_insert)
+def tn7(genome_map, input_data, Sensor):
+    print(Sensor)
     print(len(input_data))
     #gets the genome, insert location and the tn7 tranposes with the insert
     if len(input_data)> genome_map:
-        print("ak")
+
+
+         for x in range(len(input_data)):
+
+            if input_data[x:x+1]=="A":
+
+                str(x)
+
 
 Sensor, input_data = user_input()
-
 tn7_insert = usage(Sensor)
 genome_map = location_predictor()
-tn7(genome_map,input_data, tn7_insert)
+tn7(genome_map,input_data, Sensor)
