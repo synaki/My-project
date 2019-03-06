@@ -1,4 +1,4 @@
-#Editor for inserting genes using transposon
+ #Editor for inserting genes using transposon
 #Finds the positions of the inserted transposon and the gene
 
 # Imports
@@ -20,14 +20,20 @@ def usage(Sensor):
         tnsD = TnsD.seq
     # transposes D which further helps in the choosing the desired position
     gene = tnsA + tnsB + tnsC + tnsD
+    print("The insert tn7 transposes length is :")
     print(len(gene))
     product = gene
-    final = product + Sensor
-    print(final)
+    tn7_insert = Sensor + product
+    print("The final insert and tn7 transposes length is :")
+    print(len(tn7_insert))
     for Tns5 in SeqIO.parse("tn5.txt", "fasta"):
         tns5 =Tns5.seq
-        print(tns5)
-    return final,tns5
+    print("The length of tn5 transposes is :")
+    print(len(tns5))
+    tn5_insert = Sensor + tns5
+    print("The final insert and tn5 transposes length is :")
+    print(len(tn5_insert))
+    return tn5_insert,tns5, tn7_insert
 
 #function which gets input from the user
 def user_input():
@@ -44,9 +50,9 @@ def user_input():
     else:
 
         for sequence in SeqIO.parse(input_genome, "fasta"):
-
+            input_data = sequence.seq
             print("The length of the given input genome sequence is ")
-            print(len(sequence))
+            print(len(input_data))
 
     #Imports sequence using biopython limited to fasta format
 
@@ -57,7 +63,6 @@ def user_input():
             print(len(sequence))
     #Imports sequence using biopython limited to genbank sequence
 
-
     insert_Gene = input("Please insert the desired gene of interest :")
     #gets the desired gene from the user
     for fragment in SeqIO.parse(insert_Gene, "fasta"):
@@ -65,8 +70,9 @@ def user_input():
         print(len(fragment.seq))
         Sensor = fragment.seq
 
-    return Sensor, input_genome
+    return Sensor, input_data
 
+#predicts the location at which tn7 transposes insert the desired DNA
 def location_predictor():
     try:
         location = float(input("Please provide the insert position using tn7: "))
@@ -79,15 +85,15 @@ def location_predictor():
     return genome_map
 
 #function helps to insert the transposon carring segment at desired location
-def tn7(genome_map, insert_genome, final):
+def tn7(genome_map, input_data, tn7_insert):
+    print(tn7_insert)
+    print(len(input_data))
     #gets the genome, insert location and the tn7 tranposes with the insert
-    if len(input_genome)> genome_map:
+    if len(input_data)> genome_map:
         print("ak")
 
+Sensor, input_data = user_input()
 
-
-Sensor, input_genome = user_input()
-usage(Sensor)
-final = usage(Sensor)
+tn7_insert = usage(Sensor)
 genome_map = location_predictor()
-tn7(genome_map,input_genome, final)
+tn7(genome_map,input_data, tn7_insert)
