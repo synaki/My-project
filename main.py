@@ -143,31 +143,38 @@ def tn5(final, tn5_insert, Sensor):
     try:
         no_genome = int(input("How many variants of genome to be generated :"))
         print(no_genome)
+        #if the input integer is lesser than 0 it throws error
         if no_genome >0:
             locations = [random.randrange(len(final)) for i in range(no_genome)]
-            print(locations)
+            print("The variants location are :", locations)
             for x in locations:
                 # Here's where using a mutable list helps
-                ak = str(x) + "\n"+str(final[:x]+ Sensor + final[x:])
-                origin.append(ak)
-
-                f= open("ak.txt", "w")
-                f.write(ak)
-
+                final_insert = str(x) + "\n"+ str(final[:x] + Sensor + final[x:])
+                origin.append(final_insert)
+                #Write the input into new file
+                f = open("ak.txt", "w")
+                f.write(final_insert)
+                print("The genome with insert is :")
                 print(origin)
-                print(len(ak))
+
+                #gets the input from the user
+                output = input("Do you want to see the actual DNA sequence (Y/N) : ")
+                if output == "Y":
+                    print(origin)
+                    print("The length of the different variant strains are", len(final_insert))
+                else:
+                    print("The length of the different variant strains are", len(final_insert))
 
         else:
             print("Enter the right number of variants")
-
+    #throws the error
     except:
 
         print("Input is limited to integer")
         sys.exit(0)
 
 
-
-
+#calling functions
 Sensor, input_data = user_input()
 tn7_insert = usage(Sensor)
 tn5_insert = usage(Sensor)
