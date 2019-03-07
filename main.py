@@ -38,7 +38,7 @@ def usage(Sensor):
     print(tn5_insert)
     print("The final insert and tn5 transposes length is :", len(tn5_insert))
     #
-    return tn5_insert, tns5, tn7_insert, product
+    return tn5_insert, tn7_insert
     #
 
 #function which gets input from the user
@@ -92,20 +92,28 @@ def location_predictor():
 
 #function helps to insert the transposon carring segment at desired location
 def tn7(genome_map, input_data, Sensor):
-    print(Sensor)
-    print(len(input_data))
-    #gets the genome, insert location and the tn7 tranposes with the insert
+        #gets the genome, insert location and the tn7 tranposes with the insert
     if len(input_data)> genome_map:
+        #
+         final =input_data[:genome_map]+ Sensor +input_data[genome_map:]
+         print(len(final))
+    else:
+        #
+        print("Enter correct gene location")
 
+    return final
 
-         for x in range(len(input_data)):
+#function which inserts tn5 transposes in random sequence
+def tn5(final, tn5_insert):
+    #gets input from the user
+    no_genome = int(input("How many variants of genome to be generated :"))
+    print(no_genome)
 
-            if input_data[x:x+1]=="A":
-
-                str(x)
 
 
 Sensor, input_data = user_input()
 tn7_insert = usage(Sensor)
+tn5_insert = usage(Sensor)
 genome_map = location_predictor()
-tn7(genome_map,input_data, Sensor)
+final = tn7(genome_map,input_data, Sensor)
+tn5(final, tn5_insert)
