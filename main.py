@@ -111,14 +111,28 @@ def tn7(genome_map, input_data, Sensor, tn7_insert):
 
 #function which inserts tn5 transposes in random sequence
 def tn5(final, tn5_insert, Sensor):
+    pu =[]
     #gets input from the user
-    print(final)
-    print(tn5_insert)
     no_genome = int(input("How many variants of genome to be generated :"))
     print(no_genome)
-    locations = [random.randrange(len(final)) for i in range(no_genome)]
-    modifications = (locations,Sensor)
-    print (modifications)
+    if no_genome >0:
+
+        locations = [random.randrange(len(final)) for i in range(no_genome)]
+
+        print(locations)
+
+        for x in locations:
+            # Here's where using a mutable list helps
+            ak = str(final[:x]+ Sensor + final[x:])
+            pu.append(ak)
+            f= open("ak.txt", "w")
+            f.write(ak)
+            print(pu)
+            print(len(ak))
+
+
+    else:
+        print("Enter the right number of variants")
 
 
 Sensor, input_data = user_input()
