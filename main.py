@@ -4,7 +4,8 @@
 # Imports
 from Bio import SeqIO
 from Bio.Seq import Seq
-import sys
+import random
+import operator
 
 #function to get input from the user
 def usage(Sensor):
@@ -24,7 +25,7 @@ def usage(Sensor):
     print("The insert tn7 transposes length is :", len(gene))
     #
     product = gene
-    tn7_insert = (Sensor + product)
+    tn7_insert = Sensor[:1]+Sensor +tnsA +tnsB+tnsC+tnsD + Sensor[:1]
     print(tn7_insert)
     #
     print("The final insert and tn7 transposes length is :", len(tn7_insert))
@@ -91,29 +92,38 @@ def location_predictor():
     return genome_map
 
 #function helps to insert the transposon carring segment at desired location
-def tn7(genome_map, input_data, Sensor):
-        #gets the genome, insert location and the tn7 tranposes with the insert
+def tn7(genome_map, input_data, Sensor, tn7_insert):
+    print(Sensor)
+    #gets the genome, insert location and the tn7 tranposes with the insert
     if len(input_data)> genome_map:
-        #
-         final =input_data[:genome_map]+ Sensor +input_data[genome_map:]
-         print(len(final))
+        #condition which permits when the insert location is inside the input_data
+        final =input_data[:genome_map]+ Sensor +input_data[genome_map:]
+
+
+        print(final)
+        print("The Length of the genome carrying the desired gene is :")
+        print(len(final))
     else:
-        #
+        #If the location is input is wrong throws an error
         print("Enter correct gene location")
 
     return final
 
 #function which inserts tn5 transposes in random sequence
-def tn5(final, tn5_insert):
+def tn5(final, tn5_insert, Sensor):
     #gets input from the user
+    print(final)
+    print(tn5_insert)
     no_genome = int(input("How many variants of genome to be generated :"))
     print(no_genome)
-
+    locations = [random.randrange(len(final)) for i in range(no_genome)]
+    modifications = (locations,Sensor)
+    print (modifications)
 
 
 Sensor, input_data = user_input()
 tn7_insert = usage(Sensor)
 tn5_insert = usage(Sensor)
 genome_map = location_predictor()
-final = tn7(genome_map,input_data, Sensor)
-tn5(final, tn5_insert)
+final = tn7(genome_map,input_data, Sensor, tn7_insert)
+tn5(final, tn5_insert, Sensor)
