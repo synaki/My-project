@@ -1,46 +1,53 @@
- #Editor for inserting genes using transposon
+#Editor for inserting genes using transposon tn5 and tn7
 #Finds the positions of the inserted transposon and the gene
+#After insertion saves in a text document
+#creates a multiple version of insertion
 
 # Imports
 from Bio import SeqIO
 from Bio.Seq import Seq
 import random
 import operator
+import sys
 
 #function to get input from the user
 def usage(Sensor):
     #imports the essential transposon gene from the local directory
+
     for TnsA in SeqIO.parse("tnsA.txt", "fasta"):
         tnsA = TnsA.seq
+
     # transposes A which forms a complex with the transposes B and C to form a nick in the DNA
     for TnsB in SeqIO.parse("tnsB.txt", "fasta"):
         tnsB = TnsB.seq
+
     for TnsC in SeqIO.parse("tnsC.txt", "fasta"):
         tnsC = TnsC.seq
+
     for TnsD in SeqIO.parse("tnsD.txt", "fasta"):
         tnsD = TnsD.seq
     # transposes D which further helps in the choosing the desired position
+
     gene = tnsA + tnsB + tnsC + tnsD
     #concatinates the transposes to form a new sequence
+
     print("The insert tn7 transposes length is :", len(gene))
-    #
-    product = gene
+    #prints out the length of tn7 transposes
+
     tn7_insert = Sensor[:1]+Sensor +tnsA +tnsB+tnsC+tnsD + Sensor[:1]
-    print(tn7_insert)
-    #
+    #concatenates the Sensor and the tn7 transposes
     print("The final insert and tn7 transposes length is :", len(tn7_insert))
-    #
+
     for Tns5 in SeqIO.parse("tn5.txt", "fasta"):
         tns5 =Tns5.seq
-    #
+    #imports the tn5 transposes
     print("The length of tn5 transposes is :", len(tns5))
-    #
+
     tn5_insert = Sensor + tns5
-    print(tn5_insert)
     print("The final insert and tn5 transposes length is :", len(tn5_insert))
-    #
+    # concatenate desired gene and tn5 transposes
     return tn5_insert, tn7_insert
-    #
+    # return the tn7 and tn5 carrying sensor
 
 #function which gets input from the user
 def user_input():
@@ -50,32 +57,50 @@ def user_input():
     try:
         input_genome = input("please insert the genome to be edited: ")
 
-    except FileNotFoundError:
-
-        print("%s cannot be opened for reading" % (input_genome))
-
-    else:
-
+        #parses the given file if the file format matches
         for sequence in SeqIO.parse(input_genome, "fasta"):
+
             input_data = sequence.seq
             print("The length of the given input genome sequence is ")
             print(len(input_data))
 
+    #if the input file input is wrong returns error message
+    except FileNotFoundError:
+
+        print("%s cannot be opened for reading" % (input_genome))
+        sys.exit(0)
+        # if the input file is wrong it exits the run
+
     #Imports sequence using biopython limited to fasta format
+    try:
 
         for sequence in SeqIO.parse(input_genome, "gb"):
 
+            input_data = sequence.seq
             print("The length of the given input genome sequence is ")
 
             print(len(sequence))
-    #Imports sequence using biopython limited to genbank sequence
 
-    insert_Gene = input("Please insert the desired gene of interest :")
-    #gets the desired gene from the user
-    for fragment in SeqIO.parse(insert_Gene, "fasta"):
-        print("The length of the desired gene of interest")
-        print(len(fragment.seq))
-        Sensor = fragment.seq
+    except FileNotFoundError:
+
+        print("%s cannot be opened for reading" % (input_genome))
+        sys.exit(0)
+
+    #Imports sequence using biopython limited to genbank sequence
+    #Imports the desired gene of interest
+    try:
+        insert_Gene = input("Please insert the desired gene of interest :")
+        #gets the desired gene from the user
+        for fragment in SeqIO.parse(insert_Gene, "fasta"):
+            print("The length of the desired gene of interest")
+            print(len(fragment.seq))
+            Sensor = fragment.seq
+
+    except FileNotFoundError:
+
+        print("%s File Not Found" % (insert_Gene))
+        print("Enter the valid file Name")
+        sys.exit(0)
 
     return Sensor, input_data
 
@@ -86,6 +111,7 @@ def location_predictor():
 
     except:
         print("input is restricted to float")
+        sys.exit(0)
 
     genome_map = int(46416.52 * location)
     print("The Insertion position is :", genome_map)
@@ -93,14 +119,14 @@ def location_predictor():
 
 #function helps to insert the transposon carring segment at desired location
 def tn7(genome_map, input_data, Sensor, tn7_insert):
-    print(Sensor)
+
     #gets the genome, insert location and the tn7 tranposes with the insert
+    # checks the genome_map is well within the range
     if len(input_data)> genome_map:
         #condition which permits when the insert location is inside the input_data
+
         final =input_data[:genome_map]+ Sensor +input_data[genome_map:]
 
-
-        print(final)
         print("The Length of the genome carrying the desired gene is :")
         print(len(final))
     else:
@@ -111,28 +137,35 @@ def tn7(genome_map, input_data, Sensor, tn7_insert):
 
 #function which inserts tn5 transposes in random sequence
 def tn5(final, tn5_insert, Sensor):
-    pu =[]
+    #origin a list which takes the different DNA
+    origin =[]
     #gets input from the user
-    no_genome = int(input("How many variants of genome to be generated :"))
-    print(no_genome)
-    if no_genome >0:
+    try:
+        no_genome = int(input("How many variants of genome to be generated :"))
+        print(no_genome)
+        if no_genome >0:
+            locations = [random.randrange(len(final)) for i in range(no_genome)]
+            print(locations)
+            for x in locations:
+                # Here's where using a mutable list helps
+                ak = str(x) + "\n"+str(final[:x]+ Sensor + final[x:])
+                origin.append(ak)
 
-        locations = [random.randrange(len(final)) for i in range(no_genome)]
+                f= open("ak.txt", "w")
+                f.write(ak)
 
-        print(locations)
+                print(origin)
+                print(len(ak))
 
-        for x in locations:
-            # Here's where using a mutable list helps
-            ak = str(final[:x]+ Sensor + final[x:])
-            pu.append(ak)
-            f= open("ak.txt", "w")
-            f.write(ak)
-            print(pu)
-            print(len(ak))
+        else:
+            print("Enter the right number of variants")
+
+    except:
+
+        print("Input is limited to integer")
+        sys.exit(0)
 
 
-    else:
-        print("Enter the right number of variants")
 
 
 Sensor, input_data = user_input()
